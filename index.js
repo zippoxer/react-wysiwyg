@@ -37,7 +37,8 @@ var ContentEditable = React.createClass({
     onItalic: React.PropTypes.func,
     onKeyDown: React.PropTypes.func,
     onKeyPress: React.PropTypes.func,
-    placeholderStyle: React.PropTypes.object
+    placeholderStyle: React.PropTypes.object,
+    autoFocus: React.PropTypes.bool
   },
 
   getDefaultProps: function() {
@@ -48,7 +49,8 @@ var ContentEditable = React.createClass({
       onBold: noop,
       onItalic: noop,
       onKeyDown: noop,
-      onKeyPress: noop
+      onKeyPress: noop,
+      autoFocus: false
     };
   },
 
@@ -83,15 +85,45 @@ var ContentEditable = React.createClass({
       }
     }
   },
+  
+  advanceCursor: function(n) {
+	  if(this._range) {
+		  this._range.start += n;
+		  this._range.end += n;
+		  if(this._range.start > 0) {
+			  this._range.atStart = false;
+		  }
+	  }
+  },
+  
+  focus: function() {
+    var el = ReactDOM.findDOMNode(this)
+	if(document.activeElement != el) {
+		console.log("w:focus", "range", this._range);
+		el.focus();
+	}
+  },
+  
+  cursor: function() {
+	  return this._range;
+  },
 
   componentDidUpdate: function() {
     if (!this.props.editing && !this.props.html) {
       this.props.onChange('')
     }
-
     if (this._range) {
+		console.log("updated", this.props.html)
       selectionRange(ReactDOM.findDOMNode(this), this._range)
-      delete this._range
+      if(!this.props.html) {
+		  delete this._range
+	  }
+    }
+  },
+
+  componentDidMount: function(){
+    if (this.props.autoFocus){
+        this.autofocus();
     }
   },
 
@@ -292,7 +324,7 @@ var ContentEditable = React.createClass({
     var data = e.clipboardData.getData('text/plain')
     this._replaceCurrentSelection(data);
     var target = ReactDOM.findDOMNode(this)
-    this.props.onChange(target.textContent, false, target.innerHTML)
+    this.props.onChange(target.textContent, false, target)
   },
 
   onKeyPress: function(e){
@@ -315,7 +347,7 @@ var ContentEditable = React.createClass({
         self.setCursorToStart()
       }, 1)
     } else {
-      this.props.onChange(target.textContent, false, target.innerHTML)
+      this.props.onChange(target.textContent, false, target)
     }
 
   },
@@ -329,7 +361,7 @@ var ContentEditable = React.createClass({
       return
     }
 
-    this.props.onChange(escapeHTML(e.target.textContent), false, e.target.innerHTML)
+    this.props.onChange(escapeHTML(e.target.textContent), false, e.target)
   },
 
   onBlur: function(e) {

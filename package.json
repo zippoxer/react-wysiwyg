@@ -1,28 +1,46 @@
 {
-  "name": "react-wysiwyg",
-  "version": "2.2.1",
-  "description": "enable limited interaction with a content editable element, useful for in-place, wysiwyg editing",
-  "main": "index.js",
-  "scripts": {
-    "test": "karma start",
-    "e2e": "node_modules/nightwatch/bin/nightwatch --test __tests__/e2e/*"
-  },
-  "keywords": [
-    "react",
-    "contenteditable",
-    "textarea",
-    "forms"
+  "_args": [
+    [
+      "react-wysiwyg@https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+      "/home/zippoxer/gospace/src/bitbucket.org/zippoxer/appteria/appteria-dashboard"
+    ]
   ],
-  "author": "Ben McMahen",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:bmcmahen/react-wysiwyg.git"
+  "_from": "https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+  "_id": "react-wysiwyg@2.2.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/react-wysiwyg",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "react-wysiwyg",
+    "raw": "react-wysiwyg@https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+    "rawSpec": "https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+    "scope": null,
+    "spec": "https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+    "type": "remote"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+  "_shasum": "49d034c7024daab6f75a6f6cd3d0e4536c657a20",
+  "_shrinkwrap": null,
+  "_spec": "react-wysiwyg@https://github.com/ygravrand/react-wysiwyg/tarball/develop",
+  "_where": "/home/zippoxer/gospace/src/bitbucket.org/zippoxer/appteria/appteria-dashboard",
+  "author": {
+    "name": "Ben McMahen"
   },
   "bugs": {
     "url": "https://github.com/bmcmahen/react-wysiwyg/issues"
   },
-  "homepage": "https://github.com/bmcmahen/react-wysiwyg/",
+  "dependencies": {
+    "classnames": "^2.1.1",
+    "escape-html": "^1.0.2",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "selection-range": "^1.0.1"
+  },
+  "description": "enable limited interaction with a content editable element, useful for in-place, wysiwyg editing",
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-runtime": "^5.8.20",
@@ -42,23 +60,38 @@
     "react": "^0.13.0",
     "watchify": "^3.3.1"
   },
-  "dependencies": {
-    "classnames": "^2.1.1",
-    "escape-html": "^1.0.2",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2",
-    "selection-range": "^1.0.1"
-  },
+  "homepage": "https://github.com/bmcmahen/react-wysiwyg/",
   "jest": {
+    "moduleFileExtensions": [
+      "es6",
+      "js",
+      "json"
+    ],
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "testFileExtensions": [
       "es6",
       "js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "es6"
     ]
-  }
+  },
+  "keywords": [
+    "contenteditable",
+    "forms",
+    "react",
+    "textarea"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-wysiwyg",
+  "optionalDependencies": {},
+  "readme": "# React-Wysiwyg\n\n![react-wysiwyg image](demo.gif)\n\nThis component allows you to have some control over `contenteditable` content. It's especially useful for when you need to implement something that a `textarea` or `input` field can't provide -- i.e., something like Twitter's tweet-box that implements syntax highlighting, and auto-link creation, as seen in the above example. If you're looking for simple inline-editing, this module can work for that too, but I would suggest using traditional `input` fields where possible for improved cross-browser compatibility, and better accessibility.\n\nThis module works well in the latest version of Chrome, Safari, Firefox, and iOS Safari. It mostly works in IE, thanks to a series of unfortunate hacks. Further testing for accessibility and browser support is required, and other features need to be implemented, such as paragraph/newline support.\n\nIt's worth looking at the supplied example to get a sense of how to use this module.\n\n## Install\n\n```\n$ npm install react-wysiwyg\n```\n\n## Run the example\n\n```\n$ git clone https://github.com/bmcmahen/react-wysiwyg.git && cd react-wysiwyg\n$ npm install\n$ make build\n$ make example\n```\n\n## Usage\n\n```javascript\nvar ContentEditable = require('react-wysiwyg');\n\nvar Example = React.createClass({\n\n  getInitialState: function(){\n    return {\n      html: 'default text',\n      placeholder: false,\n      editing: false\n    }\n  },\n\n  render: function(){\n    return (\n      <div>\n        <ContentEditable\n          tagName='div'\n          onChange={this.onChange}\n          html={this.state.html}\n          preventStyling\n          noLinebreaks\n          placeholder={this.state.placeholder}\n          placeholderText='Your Name'\n          editing={this.state.editing}\n        />\n        <button onClick={this.enableEditing}>\n          Enable Editing\n        </button>\n      </div>\n    );\n  },\n\n  onChange: function(textContent, setPlaceholder) {\n    if (setPlaceholder) {\n      this.setState({\n        placeholder: true,\n        html: ''\n      })\n    } else {\n      this.setState({\n        placeholder: false,\n        html: textContent\n      })\n    }\n  },\n\n  enableEditing: function(){\n    // set your contenteditable field into editing mode.\n    this.setState({ editing: true });\n  }\n\n});\n```\n\n## Tests\n\n```\nmake test\n```\n",
+  "readmeFilename": "Readme.md",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bmcmahen/react-wysiwyg.git"
+  },
+  "scripts": {
+    "e2e": "node_modules/nightwatch/bin/nightwatch --test __tests__/e2e/*",
+    "test": "karma start"
+  },
+  "version": "2.2.1"
 }
