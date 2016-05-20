@@ -62,7 +62,8 @@ var ContentEditable = React.createClass({
     var el = ReactDOM.findDOMNode(this)
     if (nextProps.html !== el.innerHTML) {
       if (nextProps.html && document.activeElement === el) {
-        this._range = selectionRange(el)
+        this._range = selectionRange(el);
+		this._last_range = this._range;
       }
       return true
     }
@@ -99,24 +100,34 @@ var ContentEditable = React.createClass({
   focus: function() {
     var el = ReactDOM.findDOMNode(this)
 	if(document.activeElement != el) {
-		console.log("w:focus", "range", this._range);
 		el.focus();
 	}
   },
   
   cursor: function() {
-	  return this._range;
+	var rng = this._range || this._last_range;
+	if(rng) {
+		return rng;
+	}
+    var el = ReactDOM.findDOMNode(this);
+	if(this.props.html && document.activeElement === el) {
+		return selectionRange(el);
+	}
+	return null;
   },
 
   componentDidUpdate: function() {
     if (!this.props.editing && !this.props.html) {
       this.props.onChange('')
     }
+    var el = ReactDOM.findDOMNode(this)
+	if(document.activeElement != el) {
+		el.focus();
+	}
     if (this._range) {
-		console.log("updated", this.props.html)
       selectionRange(ReactDOM.findDOMNode(this), this._range)
       if(!this.props.html) {
-		  delete this._range
+		  this._range = null;
 	  }
     }
   },
